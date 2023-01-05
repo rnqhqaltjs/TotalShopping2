@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val itemSearchRepository = ItemSearchRepositoryImpl()
-        val factory = ItemSearchViewModelProviderFactory(itemSearchRepository)
+        val factory = ItemSearchViewModelProviderFactory(itemSearchRepository, this)
         itemSearchViewModel = ViewModelProvider(this, factory)[ItemSearchViewModel::class.java]
 
     }

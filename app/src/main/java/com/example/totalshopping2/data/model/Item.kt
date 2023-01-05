@@ -17,13 +17,13 @@ data class Item(
     @field:Json(name = "category4")
     val category4: String,
     @field:Json(name = "hprice")
-    val hprice: Int,
+    val hprice: String,
     @field:Json(name = "image")
     val image: String,
     @field:Json(name = "link")
     val link: String,
     @field:Json(name = "lprice")
-    val lprice: Int,
+    val lprice: String,
     @field:Json(name = "maker")
     val maker: String,
     @field:Json(name = "mallName")

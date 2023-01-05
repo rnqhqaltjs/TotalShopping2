@@ -1,14 +1,14 @@
 package com.example.totalshopping2.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.totalshopping2.data.model.SearchResponse
 import com.example.totalshopping2.data.repository.ItemSearchRepository
 import kotlinx.coroutines.launch
 
-class ItemSearchViewModel(private val itemSearchRepository: ItemSearchRepository) : ViewModel() {
+class ItemSearchViewModel(
+    private val itemSearchRepository: ItemSearchRepository,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
     private val _searchResult = MutableLiveData<SearchResponse>()
     val searchResult: LiveData<SearchResponse> get() = _searchResult
 
@@ -19,5 +19,20 @@ class ItemSearchViewModel(private val itemSearchRepository: ItemSearchRepository
                 _searchResult.postValue(body)
             }
         }
+    }
+
+    // SavedState
+    var query = String()
+        set(value) {
+            field = value
+            savedStateHandle[SAVE_STATE_KEY] = value
+        }
+
+    init {
+        query = savedStateHandle.get<String>(SAVE_STATE_KEY) ?: ""
+    }
+
+    companion object {
+        private const val SAVE_STATE_KEY = "query"
     }
 }
