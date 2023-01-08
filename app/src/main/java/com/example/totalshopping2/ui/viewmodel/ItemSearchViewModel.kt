@@ -3,6 +3,7 @@ package com.example.totalshopping2.ui.viewmodel
 import androidx.lifecycle.*
 import com.example.totalshopping2.data.model.SearchResponse
 import com.example.totalshopping2.data.repository.ItemSearchRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ItemSearchViewModel(
@@ -12,7 +13,7 @@ class ItemSearchViewModel(
     private val _searchResult = MutableLiveData<SearchResponse>()
     val searchResult: LiveData<SearchResponse> get() = _searchResult
 
-    fun searchItems(query: String) = viewModelScope.launch {
+    fun searchItems(query: String) = viewModelScope.launch(Dispatchers.IO) {
         val response = itemSearchRepository.searchItems(query, 10, "sim", 1)
         if (response.isSuccessful) {
             response.body()?.let { body ->
