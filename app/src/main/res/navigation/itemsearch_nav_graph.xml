@@ -13,7 +13,7 @@
     <fragment
         android:id="@+id/fragment_settings"
         android:name="com.example.totalshopping2.ui.view.SettingsFragment"
-        android:label="@string/search"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/fragment_search"
