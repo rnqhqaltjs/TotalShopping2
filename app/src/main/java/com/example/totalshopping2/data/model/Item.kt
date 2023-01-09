@@ -1,9 +1,12 @@
 package com.example.totalshopping2.data.model
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class Item(
     @field:Json(name = "brand")
@@ -34,4 +37,4 @@ data class Item(
     val productType: String,
     @field:Json(name = "title")
     val title: String
-)
+) : Parcelable
