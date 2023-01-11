@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.totalshopping2.data.model.Item
 import com.example.totalshopping2.databinding.ItemPreviewBinding
-import java.text.DecimalFormat
 
 class ItemSearchViewHolder(
     private val binding: ItemPreviewBinding
@@ -13,12 +12,11 @@ class ItemSearchViewHolder(
 
     fun bind(item: Item) {
         val title = item.title
-        val dec = DecimalFormat("###,###")
 
         itemView.apply {
             binding.ivArticleImage.load(item.image)
             binding.tvTitle.text = Html.fromHtml(title).toString()
-            binding.tvLprice.text = item.lprice
+            binding.tvLprice.text = item.lprice.toString() + "원"
             binding.tvCategory1.text = item.category1
         }
     }

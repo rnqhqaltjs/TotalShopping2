@@ -10,6 +10,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.totalshopping2.R
+import com.example.totalshopping2.data.db.ItemSearchDatabase
 import com.example.totalshopping2.data.repository.ItemSearchRepositoryImpl
 import com.example.totalshopping2.databinding.ActivityMainBinding
 import com.example.totalshopping2.ui.viewmodel.ItemSearchViewModel
@@ -32,8 +33,9 @@ class MainActivity : AppCompatActivity() {
 //            binding.bottomNavigationView.selectedItemId = R.id.fragment_search
 //        }
         setupJetpackNavigation()
-
-        val itemSearchRepository = ItemSearchRepositoryImpl()
+        
+        val database = ItemSearchDatabase.getInstance(this)
+        val itemSearchRepository = ItemSearchRepositoryImpl(database)
         val factory = ItemSearchViewModelProviderFactory(itemSearchRepository, this)
         itemSearchViewModel = ViewModelProvider(this, factory)[ItemSearchViewModel::class.java]
 

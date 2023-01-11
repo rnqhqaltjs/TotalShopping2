@@ -1,5 +1,7 @@
 package com.example.totalshopping2.data.repository
 
+import androidx.lifecycle.LiveData
+import com.example.totalshopping2.data.model.Item
 import com.example.totalshopping2.data.model.SearchResponse
 import retrofit2.Response
 
@@ -11,4 +13,11 @@ interface ItemSearchRepository {
         sort: String,
         start: Int
     ): Response<SearchResponse>
+
+    //Room
+    suspend fun insertItems(item: Item)
+
+    suspend fun deleteItems(item: Item)
+
+    fun getFavoriteItems(): LiveData<List<Item>>
 }

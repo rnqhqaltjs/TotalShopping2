@@ -1,6 +1,7 @@
 package com.example.totalshopping2.ui.viewmodel
 
 import androidx.lifecycle.*
+import com.example.totalshopping2.data.model.Item
 import com.example.totalshopping2.data.model.SearchResponse
 import com.example.totalshopping2.data.repository.ItemSearchRepository
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +22,17 @@ class ItemSearchViewModel(
             }
         }
     }
+
+    //Room
+    fun saveItem(item: Item) = viewModelScope.launch(Dispatchers.IO) {
+        itemSearchRepository.insertItems(item)
+    }
+
+    fun deleteItem(item: Item) = viewModelScope.launch(Dispatchers.IO) {
+        itemSearchRepository.deleteItems(item)
+    }
+
+    val favoriteItems: LiveData<List<Item>> = itemSearchRepository.getFavoriteItems()
 
     // SavedState
     var query = String()
