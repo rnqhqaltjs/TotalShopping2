@@ -9,12 +9,15 @@ import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.totalshopping2.databinding.FragmentItemBinding
+import com.example.totalshopping2.ui.viewmodel.ItemSearchViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class ItemFragment : Fragment() {
     private var _binding: FragmentItemBinding? = null
     private val binding get() = _binding!!
 
     private val args by navArgs<ItemFragmentArgs>()
+    private lateinit var itemSearchViewModel: ItemSearchViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,12 +31,18 @@ class ItemFragment : Fragment() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        itemSearchViewModel = (activity as MainActivity).itemSearchViewModel
 
         val item = args.item
         binding.webview.apply {
             webViewClient = WebViewClient()
             settings.javaScriptEnabled = true
             loadUrl(item.link.replace("search", "msearch").replace("gate.nhn?id=", "product/"))
+        }
+
+        binding.fabFavorite.setOnClickListener {
+            itemSearchViewModel.saveItem(item)
+            Snackbar.make(view, "Item has saved", Snackbar.LENGTH_SHORT).show()
         }
     }
 
