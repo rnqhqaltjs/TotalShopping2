@@ -1,8 +1,8 @@
 package com.example.totalshopping2.data.repository
 
-import androidx.lifecycle.LiveData
 import com.example.totalshopping2.data.model.Item
 import com.example.totalshopping2.data.model.SearchResponse
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 interface ItemSearchRepository {
@@ -19,5 +19,5 @@ interface ItemSearchRepository {
 
     suspend fun deleteItems(item: Item)
 
-    fun getFavoriteItems(): LiveData<List<Item>>
+    fun getFavoriteItems(): Flow<List<Item>>
 }

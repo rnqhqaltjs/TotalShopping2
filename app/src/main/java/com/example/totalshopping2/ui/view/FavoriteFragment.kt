@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.totalshopping2.databinding.FragmentFavoriteBinding
 import com.example.totalshopping2.ui.adapter.ItemSearchAdapter
 import com.example.totalshopping2.ui.viewmodel.ItemSearchViewModel
+import com.example.totalshopping2.util.collectLatestStateFlow
 import com.google.android.material.snackbar.Snackbar
 
 class FavoriteFragment : Fragment() {
@@ -38,10 +39,27 @@ class FavoriteFragment : Fragment() {
         setupRecyclerView()
         setupTouchHelper(view)
 
-        itemSearchViewModel.favoriteItems.observe(viewLifecycleOwner) {
+//        itemSearchViewModel.favoriteItems.observe(viewLifecycleOwner) {
+//            itemSearchAdapter.submitList(it)
+//        }
+
+//        lifecycleScope.launch {
+//            itemSearchViewModel.favoriteItems.collectLatest {
+//                itemSearchAdapter.submitList(it)
+//            }
+//        }
+
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                itemSearchViewModel.favoriteItems.collectLatest {
+//                    itemSearchAdapter.submitList(it)
+//                }
+//            }
+//        }
+
+        collectLatestStateFlow(itemSearchViewModel.favoriteItems) {
             itemSearchAdapter.submitList(it)
         }
-
     }
 
     private fun setupRecyclerView() {

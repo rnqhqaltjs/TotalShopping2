@@ -5,6 +5,9 @@ import com.example.totalshopping2.data.model.Item
 import com.example.totalshopping2.data.model.SearchResponse
 import com.example.totalshopping2.data.repository.ItemSearchRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ItemSearchViewModel(
@@ -32,7 +35,9 @@ class ItemSearchViewModel(
         itemSearchRepository.deleteItems(item)
     }
 
-    val favoriteItems: LiveData<List<Item>> = itemSearchRepository.getFavoriteItems()
+    //    val favoriteItems: Flow<List<Item>> = itemSearchRepository.getFavoriteItems()
+    val favoriteItems: StateFlow<List<Item>> = itemSearchRepository.getFavoriteItems()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), listOf())
 
     // SavedState
     var query = String()
