@@ -20,4 +20,9 @@ interface ItemSearchRepository {
     suspend fun deleteItems(item: Item)
 
     fun getFavoriteItems(): Flow<List<Item>>
+
+    // DataStore
+    suspend fun saveSortMode(mode: String)
+
+    suspend fun getSortMode(): Flow<String>
 }

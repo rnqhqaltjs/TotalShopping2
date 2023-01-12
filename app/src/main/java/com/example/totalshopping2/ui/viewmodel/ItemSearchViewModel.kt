@@ -7,8 +7,10 @@ import com.example.totalshopping2.data.repository.ItemSearchRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ItemSearchViewModel(
     private val itemSearchRepository: ItemSearchRepository,
@@ -18,7 +20,7 @@ class ItemSearchViewModel(
     val searchResult: LiveData<SearchResponse> get() = _searchResult
 
     fun searchItems(query: String) = viewModelScope.launch(Dispatchers.IO) {
-        val response = itemSearchRepository.searchItems(query, 10, "sim", 1)
+        val response = itemSearchRepository.searchItems(query, 10, getSortMode(), 1)
         if (response.isSuccessful) {
             response.body()?.let { body ->
                 _searchResult.postValue(body)
@@ -52,5 +54,14 @@ class ItemSearchViewModel(
 
     companion object {
         private const val SAVE_STATE_KEY = "query"
+    }
+
+    // DataStore
+    fun saveSortMode(value: String) = viewModelScope.launch(Dispatchers.IO) {
+        itemSearchRepository.saveSortMode(value)
+    }
+
+    suspend fun getSortMode() = withContext(Dispatchers.IO) {
+        itemSearchRepository.getSortMode().first()
     }
 }

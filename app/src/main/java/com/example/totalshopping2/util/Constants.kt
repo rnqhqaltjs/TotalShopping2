@@ -7,4 +7,5 @@ object Constants {
     const val SEARCH_BOOKS_TIME_DELAY = 100L
     const val CLIENT_ID = BuildConfig.CLIENT_ID
     const val CLIENT_SECRET = BuildConfig.CLIENT_SECRET
+    const val DATASTORE_NAME = "preferences_datastore"
 }
