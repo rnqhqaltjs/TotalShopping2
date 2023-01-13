@@ -11,16 +11,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.totalshopping2.databinding.FragmentSearchBinding
-import com.example.totalshopping2.ui.adapter.ItemSearchAdapter
+import com.example.totalshopping2.ui.adapter.ItemSearchPagingAdapter
 import com.example.totalshopping2.ui.viewmodel.ItemSearchViewModel
 import com.example.totalshopping2.util.Constants.SEARCH_BOOKS_TIME_DELAY
+import com.example.totalshopping2.util.collectLatestStateFlow
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var itemSearchViewModel: ItemSearchViewModel
-    private lateinit var itemSearchAdapter: ItemSearchAdapter
+
+    //    private lateinit var itemSearchAdapter: ItemSearchAdapter
+    private lateinit var itemSearchAdapter: ItemSearchPagingAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,14 +41,19 @@ class SearchFragment : Fragment() {
         setupRecyclerView()
         searchItems()
 
-        itemSearchViewModel.searchResult.observe(viewLifecycleOwner) { response ->
-            val items = response.items
-            itemSearchAdapter.submitList(items)
+//        itemSearchViewModel.searchResult.observe(viewLifecycleOwner) { response ->
+//            val items = response.items
+//            itemSearchAdapter.submitList(items)
+//        }
+        collectLatestStateFlow(itemSearchViewModel.searchPagingResult) {
+            itemSearchAdapter.submitData(it)
         }
+
     }
 
     private fun setupRecyclerView() {
-        itemSearchAdapter = ItemSearchAdapter()
+//        itemSearchAdapter = ItemSearchAdapter()
+        itemSearchAdapter = ItemSearchPagingAdapter()
         binding.rvSearchResult.apply {
             setHasFixedSize(true)
             layoutManager =
@@ -73,7 +81,8 @@ class SearchFragment : Fragment() {
                 text?.let {
                     val query = it.toString().trim()
                     if (query.isNotEmpty()) {
-                        itemSearchViewModel.searchItems(query)
+//                        itemSearchViewModel.searchItems(query)
+                        itemSearchViewModel.searchItemsPaging(query)
                         itemSearchViewModel.query = query
                     }
                 }

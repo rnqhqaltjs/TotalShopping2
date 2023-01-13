@@ -1,5 +1,6 @@
 package com.example.totalshopping2.data.repository
 
+import androidx.paging.PagingData
 import com.example.totalshopping2.data.model.Item
 import com.example.totalshopping2.data.model.SearchResponse
 import kotlinx.coroutines.flow.Flow
@@ -25,4 +26,9 @@ interface ItemSearchRepository {
     suspend fun saveSortMode(mode: String)
 
     suspend fun getSortMode(): Flow<String>
+
+    // Paging
+    fun getFavoritePagingItems(): Flow<PagingData<Item>>
+
+    fun searchItemsPaging(query: String, sort: String): Flow<PagingData<Item>>
 }

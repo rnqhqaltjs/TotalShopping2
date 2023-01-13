@@ -8,4 +8,5 @@ object Constants {
     const val CLIENT_ID = BuildConfig.CLIENT_ID
     const val CLIENT_SECRET = BuildConfig.CLIENT_SECRET
     const val DATASTORE_NAME = "preferences_datastore"
+    const val PAGING_SIZE = 15
 }

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.totalshopping2.databinding.FragmentFavoriteBinding
-import com.example.totalshopping2.ui.adapter.ItemSearchAdapter
+import com.example.totalshopping2.ui.adapter.ItemSearchPagingAdapter
 import com.example.totalshopping2.ui.viewmodel.ItemSearchViewModel
 import com.example.totalshopping2.util.collectLatestStateFlow
 import com.google.android.material.snackbar.Snackbar
@@ -21,7 +21,9 @@ class FavoriteFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var itemSearchViewModel: ItemSearchViewModel
-    private lateinit var itemSearchAdapter: ItemSearchAdapter
+
+    //    private lateinit var itemSearchAdapter: ItemSearchAdapter
+    private lateinit var itemSearchAdapter: ItemSearchPagingAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,13 +59,17 @@ class FavoriteFragment : Fragment() {
 //            }
 //        }
 
-        collectLatestStateFlow(itemSearchViewModel.favoriteItems) {
-            itemSearchAdapter.submitList(it)
+//        collectLatestStateFlow(itemSearchViewModel.favoriteItems) {
+//            itemSearchAdapter.submitList(it)
+//        }
+        collectLatestStateFlow(itemSearchViewModel.favoritePagingItems) {
+            itemSearchAdapter.submitData(it)
         }
     }
 
     private fun setupRecyclerView() {
-        itemSearchAdapter = ItemSearchAdapter()
+//        itemSearchAdapter = ItemSearchAdapter()
+        itemSearchAdapter = ItemSearchPagingAdapter()
         binding.rvFavoriteItems.apply {
             setHasFixedSize(true)
             layoutManager =
@@ -96,13 +102,23 @@ class FavoriteFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.bindingAdapterPosition
-                val item = itemSearchAdapter.currentList[position]
-                itemSearchViewModel.deleteItem(item)
-                Snackbar.make(view, "Item has deleted", Snackbar.LENGTH_SHORT).apply {
-                    setAction("Undo") {
-                        itemSearchViewModel.saveItem(item)
-                    }
-                }.show()
+//                val item = itemSearchAdapter.currentList[position]
+//                itemSearchViewModel.deleteItem(item)
+//                Snackbar.make(view, "Item has deleted", Snackbar.LENGTH_SHORT).apply {
+//                    setAction("Undo") {
+//                        itemSearchViewModel.saveItem(item)
+//                    }
+//                }.show()
+
+                val pagedItem = itemSearchAdapter.peek(position)
+                pagedItem?.let { item ->
+                    itemSearchViewModel.deleteItem(item)
+                    Snackbar.make(view, "Item has deleted", Snackbar.LENGTH_SHORT).apply {
+                        setAction("Undo") {
+                            itemSearchViewModel.saveItem(item)
+                        }
+                    }.show()
+                }
             }
         }
         ItemTouchHelper(itemTouchHelperCallback).apply {

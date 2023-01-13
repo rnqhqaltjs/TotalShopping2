@@ -1,5 +1,6 @@
 package com.example.totalshopping2.data.db
 
+import androidx.paging.PagingSource
 import androidx.room.*
 import com.example.totalshopping2.data.model.Item
 import kotlinx.coroutines.flow.Flow
@@ -15,4 +16,7 @@ interface ItemSearchDao {
 
     @Query("SELECT * FROM items")
     fun getFavoriteItems(): Flow<List<Item>>
+
+    @Query("SELECT * FROM items")
+    fun getFavoritePagingItems(): PagingSource<Int, Item>
 }
